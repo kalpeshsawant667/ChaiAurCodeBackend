@@ -1,0 +1,21 @@
+{
+  "name": "chaiaurcodebackend",
+  "version": "1.0.0",
+  "description": "chai aur backend series of Hitesh choudary",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "kalpeshsawant667"
+  },
+  "author": "Kalpesh Sawant",
+  "license": "ISC",
+  "dependencies": {
+    "-": "^0.0.1",
+    "D": "^1.0.0",
+    "nodemon": "^3.0.2"
+  }
+}
