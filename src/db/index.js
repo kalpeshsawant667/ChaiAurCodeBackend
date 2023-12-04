@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 import { DB_NAME } from "../constants.js";
+import { MONGODB_URI} from "../../../ChaiAurCodeBackend/"
 
 const connectDB = async () => {
     try {
         const connectionInstance = await mongoose.connect(
-            `mongodb+srv://kalpeshsawant667:Saanvisaw2632@cluster0.hagly.mongodb.net
+            `${process.env.MONGODB_URI}
             /${DB_NAME}`,
             {
                 useNewUrlParser: true,
@@ -14,7 +15,7 @@ const connectDB = async () => {
 
         console.log(`MongoDB connected! DB HOST: ${connectionInstance.connection.host}`);
     } catch (error) {
-        console.error("MongoDB connection ERROR:", error);
+        console.error("MongoDB connection FAILED:", error);
         process.exit(1);
     }
 };
