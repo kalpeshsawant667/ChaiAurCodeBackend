@@ -2,6 +2,25 @@ import {asyncHandler} from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiError.js";
 import {User} from "../models/user.model.js";
 
+const generateAccessAndRefreshTokens = async(userId){
+    const accessTokenExpiresIn = '15m'; // 15 minutes
+    try{
+        const user = await User.findById(userId)
+        const accessToken= user.generateAccessToken
+        const refreshToken= user.generateRefreshToken
+
+        user.refreshToken = refreshToken
+        user.save({validateBeforeSave: false})
+        
+        return {accessToken, refreshToken}
+    }
+    catch(error)
+    {
+        throw new ApiError(500, "Something went wrong while generating referesh and access token")
+    }
+
+}
+
 const registerUser = asyncHandler(async(req, res)=>{
     const { fullname, email, username, password} = req.body
     if([fullname, email, username, password]
@@ -21,5 +40,26 @@ const registerUser = asyncHandler(async(req, res)=>{
     console.log(fullname, email, username, password)
 })
 
+const loginUser = async(async (req, res) => {
+  const { email, username, password } = req.body;
+  if (!username || !email) {
+    throw new ApiError(400, "username or password is required");
+  }
+  
+  const user = await User.findOne({
+    $or: [{username}, {email}]
+  })
 
-export {registerUser}
+  if(!user){
+    throw new ApiError(404, " User does not exist")
+  }
+
+  const isPasswordValid = await user.isPasswordCorrect(password)
+
+  if(!isPasswordValid){
+    throw new ApiError(401, "Not Valid Password")
+  }
+  generateAccessAndRefreshTokens(user._id)
+});
+
+export {registerUser,loginUser} 
