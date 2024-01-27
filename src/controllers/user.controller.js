@@ -2,7 +2,7 @@ import {asyncHandler} from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiError.js";
 import {User} from "../models/user.model.js";
 
-const generateAccessAndRefreshTokens = async(userId){
+const generateAccessAndRefreshTokens = async(userId)=>{
     const accessTokenExpiresIn = '15m'; // 15 minutes
     try{
         const user = await User.findById(userId)
